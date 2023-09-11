@@ -1,4 +1,10 @@
-# Project Full Stack
+# DEMO - Project Full Stack
+
+- [ ] Project passes eslint
+- [ ] The project builds and can start
+- [ ] All endpoints can be requested from postman/insomnia/swagger
+- [ ] Data is stored in database successfully and kafka messager working
+- [ ] Application is covered with unit/functional tests
 
 ## Description
 
@@ -15,10 +21,9 @@ This is a simple [Nest](https://github.com/nestjs/nest) REST application from sc
 
 ## Requirements
 
-- [NVM](https://github.com/nvm-sh/nvm) (optional)
+- [NVM](https://github.com/nvm-sh/nvm) (optional, this project uses node 18.15.0 version)
 - Installed Docker
-- Installed Node.js and yarn
-- Installed RabbitMQ
+- Installed Node.js(npm) and yarn
 
 ## Installation
 

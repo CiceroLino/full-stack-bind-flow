@@ -1,10 +1,46 @@
-version: '2'
-
-networks:
-  app-net:
-    driver: bridge
+version: '3.8'
 
 services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/dockerfile
+      target: development
+    ports:
+      - '3000:3000'
+    depends_on:
+      - auth-microservice
+      - payments-microservice
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  auth-microservice:
+    build:
+      context: .
+      dockerfile: ./apps/auth-microservice/dockerfile
+      target: development
+    ports:
+      - '3001:3001'
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  payments-microservice:
+    build:
+      context: .
+      dockerfile: ./apps/payments-microservice/dockerfile
+      target: development
+    ports:
+      - '3002:3002'
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
   zookeeper:
     image: 'docker.io/bitnami/zookeeper:3-debian-10'
     ports:
@@ -30,19 +66,7 @@ services:
       - zookeeper
     networks:
       - app-net
-  server:
-    build: .
-    command: 'yarn start server'
-    depends_on:
-      - kafka
-    networks:
-      - app-net
-  client:
-    build: .
-    command: 'yarn start client'
-    ports:
-      - '3000:3000'
-    depends_on:
-      - server
-    networks:
-      - app-net
+
+networks:
+  app-net:
+    driver: bridge
